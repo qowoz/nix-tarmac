@@ -23,17 +23,9 @@
         {
           options.nix-tarmac.package = lib.mkOption {
             type = lib.types.package;
-            default =
-              let
-                scope = pkgs.callPackage ./packages.nix { };
-              in
-              scope.mkDispatcher (
-                lib.optional (config.nix.package ? libs.nix-fetchers) (
-                  pkgs.callPackage ./package.nix {
-                    inherit (config.nix.package.libs) nix-fetchers nix-store nix-util;
-                  }
-                )
-              );
+            default = pkgs.callPackage ./package.nix {
+              inherit (config.nix.package.libs) nix-fetchers nix-store nix-util;
+            };
             defaultText = "plugin built against config.nix.package";
           };
           config.nix.settings.plugin-files = [
